@@ -28,12 +28,25 @@ jobs:
       run: npm install -g @usebruno/cli
     
     - name: Verify Bruno CLI installation
-      run: bru --version
+      run: |
+        bru --version
+        which bru
+    
+    - name: List collection files
+      run: |
+        ls -la UnicornFarm/
+        echo "--- Collection structure ---"
+        find UnicornFarm/ -type f -name "*.bru" | head -10
     
     - name: Run Bruno tests
       run: |
         cd UnicornFarm
-        bru run --env Test --reporter-html TestReport.html || echo "Tests completed with errors"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        echo "--- Running Bruno tests ---"
+        bru run --env Test --reporter-html TestReport.html
+      continue-on-error: true
     
     - name: Check if test report exists
       id: check_report
