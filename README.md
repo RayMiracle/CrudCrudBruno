@@ -103,7 +103,7 @@ bruno --version
 cd path/to/UnicornFarm
 
 # Run the collection and generate HTML report
-bru run --env Test --reporter-html TestReport020825.html
+bru run --env Test --reporter-html TestReport.html
 ```
 
 **HTML Report Features:**
