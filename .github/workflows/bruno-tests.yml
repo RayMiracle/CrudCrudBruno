@@ -34,13 +34,15 @@ jobs:
     
     - name: List collection files
       run: |
-        ls -la UnicornFarm/
+        echo "Repository root contents:"
+        ls -la
         echo "--- Collection structure ---"
-        find UnicornFarm/ -type f -name "*.bru" | head -10
+        find . -type f -name "*.bru" | head -10
+        echo "--- Environment files ---"
+        find . -path "*/environments/*" -name "*.bru"
     
     - name: Run Bruno tests
       run: |
-        cd UnicornFarm
         echo "Current directory: $(pwd)"
         echo "Files in current directory:"
         ls -la
@@ -51,7 +53,7 @@ jobs:
     - name: Check if test report exists
       id: check_report
       run: |
-        if [ -f "UnicornFarm/TestReport.html" ]; then
+        if [ -f "TestReport.html" ]; then
           echo "report_exists=true" >> $GITHUB_OUTPUT
         else
           echo "report_exists=false" >> $GITHUB_OUTPUT
@@ -62,7 +64,7 @@ jobs:
       if: steps.check_report.outputs.report_exists == 'true'
       with:
         name: bruno-test-results
-        path: UnicornFarm/TestReport.html
+        path: TestReport.html
         retention-days: 30
     
     - name: Comment PR with test results
@@ -71,7 +73,7 @@ jobs:
       with:
         script: |
           const fs = require('fs');
-          const path = 'UnicornFarm/TestReport.html';
+          const path = 'TestReport.html';
           
           let comment = '## 🧪 Bruno API Test Results\n\n';
           
