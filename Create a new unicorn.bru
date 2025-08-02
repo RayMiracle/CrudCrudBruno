@@ -1,0 +1,89 @@
+meta {
+  name: Create a new unicorn
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BaseURL}}/unicorns
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Alfa Test",
+    "age": 21,
+    "colour": "grey"
+  }
+}
+
+vars:post-response {
+  unicornId: res.body._id
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  // Define JSON Schema
+  const schema = {
+      "type": "object",
+      "properties": {
+          "name": {
+              "type": "string"
+          },
+          "age": {
+              "type": "number"
+          },
+          "colour": {
+              "type": "string"
+          },
+          "_id": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$" // Validates a 24-character hexadecimal string
+          }
+      },
+      "required": [
+          "name",
+          "age",
+          "colour",
+          "_id"
+      ],
+      "additionalProperties": false // Ensures no extra properties are allowed
+  };
+  
+  // Initialize Ajv with 'allErrors: true' to see all validation failures
+  const Ajv = require('ajv');
+  const ajv = new Ajv({ allErrors: true });
+  
+  // Compile the schema for better performance (recommended by Ajv)
+  const validate = ajv.compile(schema);
+  
+  // --- Test: Response body schema is valid ---
+  test("Response body schema is valid", function () {
+      const valid = validate(res.body);    
+      expect(valid).to.be.true;
+      // If validation fails, log the errors for debugging
+      if (!valid) {
+          console.error("Schema validation failed (Ajv errors):", validate.errors);
+          // Throw an error to make the test explicitly fail and show details
+          throw new Error("Schema validation failed: " + JSON.stringify(validate.errors, null, 2));
+      }
+  });
+  
+  // Save whole response body into variable
+  bru.setVar("fullApiPostResponse", res.body);
+  console.info("Entire response body saved to 'fullApiPostResponse' variable.");
+  
+  // --- Test: Response body saved ---
+  test("Full response body saved to variable", function() {
+      expect(bru.getVar("fullApiPostResponse")).to.exist;
+      expect(bru.getVar("fullApiPostResponse")).to.be.an('object');
+  });
+}
+
+settings {
+  encodeUrl: true
+}

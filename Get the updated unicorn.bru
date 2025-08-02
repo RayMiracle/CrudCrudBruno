@@ -1,0 +1,40 @@
+meta {
+  name: Get the updated unicorn
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{BaseURL}}/unicorns/{{unicornId}}
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+      "name": "Alfa Test",
+      "age": 21,
+      "colour": "grey"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  // Fetch saved request body from the previous PUT request
+  const updatedUnicornData = bru.getVar("updatedUnicornData");
+  
+  // --- Test: Response body matches the PUT ---
+  test("Expected response body received", function() {
+    const receivedResponseBody = res.body;
+    expect(receivedResponseBody.name).to.eql(receivedResponseBody.name);
+    expect(receivedResponseBody.age).to.eql(receivedResponseBody.age);
+    expect(receivedResponseBody.colour).to.eql(receivedResponseBody.colour);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,19 @@
+docs {
+  # Bruno Collection: Unicorn CRUD Automation
+  
+  This Bruno collection is designed to automate **Create, Read, Update, and Delete (CRUD)** operations for a unicorn API, ensuring data integrity and API functionality.
+  
+  ---
+  
+  ## Key Features & Workflow:
+  
+  * **Create Unicorn:** Adds a new unicorn resource.
+  * **Check New Unicorn Data:** Verifies the details of the newly created unicorn, including a **status code (200)** and comprehensive **schema validation** of the response body. It also saves the **full response body** and the `_id` of the created unicorn into runtime variables (`fullApiPostResponse` and `unicornId`) for subsequent requests.
+  * **Update Unicorn Data:** Modifies the existing unicorn's data using the `unicornId`.
+  * **Check Unicorn New Data:** Confirms the unicorn's data has been successfully updated, performing **status code (200)** and **response body property checks**.
+  * **Delete Unicorn:** Removes the unicorn resource using its `unicornId`.
+  * **Check Unicorn Does Not Exist:** Verifies that the unicorn has been successfully deleted by attempting to retrieve it, expecting a **404 Not Found** status code.
+  * **Variable Management:** Leverages an **environment variable (`BaseURL`)** for API endpoint flexibility and **runtime variables (`unicornId`, `fullApiPostResponse`, `updatedUnicornData`)** for data persistence and sequential test execution tracking across requests.
+  * **Robust Validations:** Incorporates **status code assertions, Ajv JSON schema validations** for response structure, and **deep equality checks** for response body content verification.
+  * **Automated Cleanup:** Includes code to **clear all runtime variables** at the end of the test run, ensuring a clean state for subsequent executions.
+}

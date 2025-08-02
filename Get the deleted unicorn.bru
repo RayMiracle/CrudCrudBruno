@@ -1,0 +1,32 @@
+meta {
+  name: Get the deleted unicorn
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{BaseURL}}/unicorns/{{unicornId}}
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+      "name": "Alfa Test",
+      "age": 21,
+      "colour": "grey"
+  }
+}
+
+assert {
+  res.status: eq 404
+}
+
+tests {
+  bru.deleteAllVars();
+  console.info(`The 'UnicornFarm' collection run is complete.`);
+}
+
+settings {
+  encodeUrl: true
+}

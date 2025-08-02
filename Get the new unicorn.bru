@@ -1,0 +1,37 @@
+meta {
+  name: Get the new unicorn
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BaseURL}}/unicorns/{{unicornId}}
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+      "name": "Alfa Test",
+      "age": 21,
+      "colour": "grey"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  // Fetch saved response body from the previous POST request
+  const fullApiPostResponse = bru.getVar("fullApiPostResponse");
+  
+  // --- Test: Response body matches the POST ---
+  test("Expected response body received", function() {
+    expect(fullApiPostResponse).to.eql(res.body);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Update the new unicorn
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BaseURL}}/unicorns/{{unicornId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {{updatedUnicornData}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:pre-request {
+  const requestBody = {
+    "name": "Beta Test",
+    "age": 22,
+    "colour": "black"
+  }
+  
+  bru.setVar("updatedUnicornData", requestBody);
+}
+
+settings {
+  encodeUrl: true
+}
