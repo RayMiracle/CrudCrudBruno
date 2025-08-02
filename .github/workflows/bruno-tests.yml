@@ -23,7 +23,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
     
     - name: Install Bruno CLI
       run: npm install -g @usebruno/cli
@@ -34,12 +33,20 @@ jobs:
     - name: Run Bruno tests
       run: |
         cd UnicornFarm
-        bru run --env Test --reporter-html TestReport.html
-      continue-on-error: true
+        bru run --env Test --reporter-html TestReport.html || echo "Tests completed with errors"
+    
+    - name: Check if test report exists
+      id: check_report
+      run: |
+        if [ -f "UnicornFarm/TestReport.html" ]; then
+          echo "report_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "report_exists=false" >> $GITHUB_OUTPUT
+        fi
     
     - name: Upload test results
       uses: actions/upload-artifact@v4
-      if: always()
+      if: steps.check_report.outputs.report_exists == 'true'
       with:
         name: bruno-test-results
         path: UnicornFarm/TestReport.html
