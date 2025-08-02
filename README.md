@@ -46,6 +46,27 @@ Before running this test collection, ensure you have:
 - **Active Internet Connection** - Required to access the CrudCrud API endpoint
 - **Valid API Endpoint** - The CrudCrud endpoint in the environment may expire; update `BaseURL` in `environments/Test.bru` if needed
 
+### Optional: Bruno CLI Installation
+
+For command line execution, you can install Bruno CLI:
+
+**Using npm:**
+```bash
+npm install -g @usebruno/cli
+```
+
+**Using yarn:**
+```bash
+yarn global add @usebruno/cli
+```
+
+**Verify installation:**
+```bash
+bruno --version
+```
+
+**Note:** Bruno CLI is optional and only needed if you want to run tests from the command line or integrate with CI/CD pipelines.
+
 ## Getting Started
 
 ### Import Collection
