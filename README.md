@@ -102,9 +102,16 @@ bruno --version
 # Navigate to collection directory
 cd path/to/UnicornFarm
 
-# Run the entire collection
-bruno run --env Test
+# Run the collection and generate HTML report
+bru run --env Test --reporter-html TestReport020825.html
 ```
+
+**HTML Report Features:**
+- Detailed test execution results
+- Response data and status codes
+- Assertion results and failures
+- Execution timing information
+- Professional formatting for sharing with stakeholders
 
 ## Expected Test Results
 
